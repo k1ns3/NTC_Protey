@@ -1,0 +1,43 @@
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: #191c2a;
+}
+
+.container_block {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.content {
+  width: 80%;
+  height: 100vh;
+  color: #fff;
+}
+
+.content_block {
+  width: 95%;
+  height: 100vh;
+  max-height: 920px;
+  padding-top: 10px;
+  margin: 0 auto;
+  color: #333333;
+}
+
+.aside {
+  width: 20%;
+  height: 100vh;
+}
+
+.aside_block {
+  width: 95%;
+  height: 100vh;
+  max-height: 920px;
+  background-color: #272a38;
+  margin: 0 auto;
+}
+
+li {
+  background-color: #272a38;
+  border: 1px solid #1c1f2b;
+}
