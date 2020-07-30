@@ -1,27 +1,33 @@
-# ProteyTest
+# Тестовое задание на позицию Frontend Developer в НТЦ Протей
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
+Необходимо реализовать систему просмотра объектов на карте.
 
-## Development server
+Страница должна быть поделена на 2 области:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- ~~Список объектов.~~
+- ~~Карта, на которой отображаются объекты.~~
 
-## Code scaffolding
+# Дополнительные сведения
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- ~~Объекты подгружаются из JSON-файла.~~
+- При выделении объекта на карте маркер должен менять цвет на другой, а соответствующее поле в списке выделяться.Такое же поведение должно быть, когда выбор происходит из списка. При выделении маркера карта должна центрироваться на нем.
+- Если был выделен объект на карте и выделяется другой объект, то выделение с предыдущего элемента должно сняться.
+- Возможность во время работы добавить новый объект на карту (в json изменения сохранять не нужно).
+- Возможность во время работы удалить объект на карте (в json изменения сохранять не нужно).
+- Возможность фильтровать список объектов.
 
-## Build
+# Требования
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- ~~Реализовать с использованием Angular 8+.~~
+- ~~Не использовать препроцессоры css, но можно использовать postCSS.~~
+- ~~Для карт использовать библиотеку Leaflet.~~
+- ~~Не использовать ui-фреймворки (Bootstrap, Material и т.п.).~~
+- ~~Задание должно быть написанно на TypeScript.~~
 
-## Running unit tests
+# Дополнительные требования (не обязательно, но будет плюсом)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- Разбить объекты на группы и добавить возможность скрывать/показывать эти группы на карте.
+- Сделать пагинацию для списка объектов.
+- Сделать добавление объекта с помощью всплывающих окон.
+- Сделать окно с подтверждением удаления объекта.
+- Написать тесты.
