@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { ItemsService } from '../services/items.service';
 import { greenIcon, redIcon } from '../../constants/points';
@@ -15,8 +15,6 @@ export class MapComponentComponent implements AfterViewInit {
   markerId: number;
   oldMarkerId: L.marker;
   markers: L.marker[];
-
-  @Output() isCenteringEnabledChange: EventEmitter<boolean>;
 
   constructor(private itemsService: ItemsService) {
     this.zoomLevel = 10;
