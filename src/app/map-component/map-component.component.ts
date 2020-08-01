@@ -1,6 +1,14 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnInit,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import * as L from 'leaflet';
-import { ItemsService } from '../items.service';
+import { ItemsService } from '../services/items.service';
+import { greenIcon, redIcon } from '../../constants/points';
+import { MainLayer } from '../models/mainLayer';
 
 @Component({
   selector: 'app-map-component',
@@ -9,10 +17,23 @@ import { ItemsService } from '../items.service';
 })
 export class MapComponentComponent implements AfterViewInit, OnInit {
   map: L.Map;
-  constructor(private itemsService: ItemsService) {}
+  zoomLevel: number;
+  markerId: number;
+  oldMarkerId: L.marker;
+  markers: L.marker[];
+
+  @Output() isCenteringEnabledChange: EventEmitter<boolean>;
+
+  constructor(private itemsService: ItemsService) {
+    this.zoomLevel = 10;
+    this.markers = [];
+    this.oldMarkerId = null;
+    this.markerId = null;
+  }
 
   ngAfterViewInit(): void {
     this.getMapData();
+    this.getData();
   }
 
   ngOnInit(): void {
@@ -25,17 +46,15 @@ export class MapComponentComponent implements AfterViewInit, OnInit {
       longitude: 30.314954,
     };
 
-    const zoomLevel = 11;
-
     this.map = new L.map('map', {
       center: [saintPetersburg.latitude, saintPetersburg.longitude],
-      zoom: zoomLevel,
+      zoom: this.zoomLevel,
     });
 
-    const mainLayer: any = L.tileLayer(
+    const mainLayer: MainLayer = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
-        minZoom: 11,
+        minZoom: 10,
         maxZoom: 18,
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -45,12 +64,37 @@ export class MapComponentComponent implements AfterViewInit, OnInit {
   }
 
   getData(): void {
+    const markers = [];
     this.itemsService.getJSON().subscribe((data) => {
       data.items.forEach((point) => {
-        L.marker([point.latitude, point.longitude])
-          .bindPopup(point.title)
-          .addTo(this.map);
+        markers.push({
+          marker: L.marker([point.latitude, point.longitude], {
+            icon: greenIcon,
+            id: point.id,
+          })
+            .addTo(this.map)
+            .bindPopup(`<h3 style="color: #264c7c">${point.title}</h3>`)
+            .on('click', (event) => this.onClickMarker(event)),
+        });
       });
+      this.markers = markers;
     });
+  }
+
+  onClickMarker(event): void {
+    const layer = event.target;
+    this.map.panTo(layer.getLatLng());
+    this.onChangeMarker(layer);
+  }
+
+  onChangeMarker(layer): void {
+    layer.setIcon(redIcon);
+    this.oldMarkerId = this.markers.find(
+      (item) => item.marker.options.id === this.markerId
+    );
+    if (this.oldMarkerId !== undefined) {
+      this.oldMarkerId.marker.setIcon(greenIcon);
+    }
+    this.markerId = layer.options.id;
   }
 }

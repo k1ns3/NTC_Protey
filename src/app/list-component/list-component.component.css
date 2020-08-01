@@ -4,9 +4,7 @@
   padding: 0;
   color: #fff;
   font-family: "Tahoma", sans-serif;
-  moz-user-select: none;
   -ms-user-select: none;
-  -o-user-select: none;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -46,7 +44,8 @@ li {
   text-align: -webkit-match-parent;
 }
 
-.menu-link--accent.menu-link--active {
+/*TODO: класс для активного элемента*/
+.menu-link--active {
   background-color: #264c7c;
   color: #ffffff;
 }

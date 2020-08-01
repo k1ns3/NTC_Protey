@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ItemsService {
   constructor(private http: HttpClient) {}
+
   public getJSON(): Observable<any> {
     return this.http.get('./assets/data/data.json');
   }
