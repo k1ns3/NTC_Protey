@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import { ItemsService } from '../services/items.service';
+import { ItemsService } from '../shared/items.service';
 import { greenIcon, redIcon } from '../../constants/points';
 import { MainLayer } from '../models/mainLayer';
 
@@ -72,10 +72,10 @@ export class MapComponentComponent implements AfterViewInit {
   onClickMarker(event): void {
     const layer = event.target;
     this.map.panTo(layer.getLatLng());
-    this.onChangeMarker(layer);
+    this.onChangeMarkerIcon(layer);
   }
 
-  onChangeMarker(layer): void {
+  onChangeMarkerIcon(layer: L.marker): void {
     layer.setIcon(redIcon);
     this.oldMarkerId = this.markers.find(
       (item) => item.marker.options.id === this.markerId

@@ -4,10 +4,11 @@
     <ul class="menu__list">
       <li *ngFor="let obj of objects">
         <div class="menu-link--accent menu-link">
-          <a class="menu-link__link">{{ obj.id + 1 }}) {{ obj.title }}</a>
+          <a (click)="itemsService.getTaskId(obj.id)" class="menu-link__link"
+            >{{ obj.id + 1 }}) {{ obj.title }}</a
+          >
         </div>
       </li>
     </ul>
-    <div class="menu-link__link"></div>
   </div>
 </div>

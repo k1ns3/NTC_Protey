@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemsService } from '../services/items.service';
-import { Items } from '../models/items';
+import { ItemsService } from '../shared/items.service';
+import { Item } from '../models/items';
 
 @Component({
   selector: 'app-list-component',
@@ -8,8 +8,12 @@ import { Items } from '../models/items';
   styleUrls: ['./list-component.component.css'],
 })
 export class ListComponentComponent implements OnInit {
-  objects: Items[] = [];
-  constructor(private itemsService: ItemsService) {}
+  objects: Item[];
+  array: any;
+
+  constructor(private itemsService: ItemsService) {
+    this.objects = [];
+  }
 
   ngOnInit(): void {
     this.getData();
