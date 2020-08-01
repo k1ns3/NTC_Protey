@@ -1,10 +1,4 @@
-import {
-  Component,
-  AfterViewInit,
-  OnInit,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import * as L from 'leaflet';
 import { ItemsService } from '../services/items.service';
 import { greenIcon, redIcon } from '../../constants/points';
@@ -15,7 +9,7 @@ import { MainLayer } from '../models/mainLayer';
   templateUrl: './map-component.component.html',
   styleUrls: ['./map-component.component.css'],
 })
-export class MapComponentComponent implements AfterViewInit, OnInit {
+export class MapComponentComponent implements AfterViewInit {
   map: L.Map;
   zoomLevel: number;
   markerId: number;
@@ -33,10 +27,6 @@ export class MapComponentComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     this.getMapData();
-    this.getData();
-  }
-
-  ngOnInit(): void {
     this.getData();
   }
 
