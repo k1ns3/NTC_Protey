@@ -15,7 +15,6 @@ export class ItemsService {
   }
 
   public getTaskId(id: BehaviorSubject<number>): BehaviorSubject<number> {
-    console.log(id);
     return (this.selectedItem = id);
   }
 }

@@ -1,8 +1,9 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { ItemsService } from '../shared/items.service';
-import { greenIcon, redIcon } from '../../constants/points';
+import { greenIcon } from '../../constants/points';
 import { MainLayer } from '../models/mainLayer';
+import { MapService } from '../shared/map.service';
 
 @Component({
   selector: 'app-map-component',
@@ -14,11 +15,12 @@ export class MapComponentComponent implements AfterViewInit {
   zoomLevel: number;
   markerId: any;
   oldMarkerId: L.marker;
-  markers: L.marker[];
 
-  constructor(private itemsService: ItemsService) {
+  constructor(
+    private itemsService: ItemsService,
+    private mapService: MapService
+  ) {
     this.zoomLevel = 10;
-    this.markers = [];
     this.oldMarkerId = null;
     this.markerId = null;
   }
@@ -34,7 +36,7 @@ export class MapComponentComponent implements AfterViewInit {
       longitude: 30.314954,
     };
 
-    this.map = new L.map('map', {
+    this.mapService.map = new L.map('map', {
       center: [saintPetersburg.latitude, saintPetersburg.longitude],
       zoom: this.zoomLevel,
     });
@@ -48,7 +50,7 @@ export class MapComponentComponent implements AfterViewInit {
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }
     );
-    mainLayer.addTo(this.map);
+    mainLayer.addTo(this.mapService.map);
   }
 
   getData(): void {
@@ -60,32 +62,14 @@ export class MapComponentComponent implements AfterViewInit {
             icon: greenIcon,
             id: point.id,
           })
-            .addTo(this.map)
+            .addTo(this.mapService.map)
             .bindPopup(
               `<h3 style="color: #264c7c">${point.title} - ${point.id}</h3>`
             )
-            .on('click', (event) => this.onClickMarker(event)),
+            .on('click', (event) => this.mapService.onClickMarker(event)),
         });
       });
-      this.markers = markers;
+      this.mapService.markers = markers;
     });
-  }
-
-  onClickMarker(event): void {
-    const layer = event.target;
-    this.map.panTo(layer.getLatLng());
-    this.onChangeMarkerIcon(layer);
-  }
-
-  onChangeMarkerIcon(layer: L.marker): void {
-    layer.setIcon(redIcon);
-    this.oldMarkerId = this.markers.find(
-      (item) => item.marker.options.id === this.markerId
-    );
-    if (this.oldMarkerId) {
-      this.oldMarkerId.marker.setIcon(greenIcon);
-    }
-    this.markerId = layer.options.id;
-    this.itemsService.getTaskId(this.markerId);
   }
 }

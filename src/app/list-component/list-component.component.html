@@ -1,6 +1,7 @@
 <div class="menu__list">
   <h1>Список объектов:</h1>
   <h2>Выбранный объект: {{ itemsService.selectedItem | number }}</h2>
+  <button (click)="mapService.addObject()" class="button-add">Добавить</button>
   <div class="sidebar__menu">
     <ul class="menu__list">
       <li *ngFor="let obj of objects">
