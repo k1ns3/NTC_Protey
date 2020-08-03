@@ -44,7 +44,6 @@ li {
   text-align: -webkit-match-parent;
 }
 
-/*TODO: класс для активного элемента*/
 .menu-link--active {
   background-color: #264c7c;
   color: #ffffff;
