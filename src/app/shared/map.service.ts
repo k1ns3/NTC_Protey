@@ -36,7 +36,7 @@ export class MapService {
 
   public addObject(obj: any): void {
     this.markers.push({
-      marker: L.marker([obj.latitude, obj.longitude], {
+      marker: L.marker([Number(obj.latitude), Number(obj.longitude)], {
         icon: greenIcon,
         id: this.markers.length + 1,
       })
@@ -48,7 +48,7 @@ export class MapService {
         )
         .on('click', (event) => this.onClickMarker(event)),
     });
-    console.log(this.markers);
+    console.log('Маркеры обновлены: ', this.markers);
   }
 
   public getTaskId(id: BehaviorSubject<number>): BehaviorSubject<number> {

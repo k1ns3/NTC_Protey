@@ -44,7 +44,7 @@ export class MapComponentComponent implements AfterViewInit {
     const mainLayer: MainLayer = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
-        minZoom: 10,
+        minZoom: 8,
         maxZoom: 18,
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',

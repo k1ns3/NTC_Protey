@@ -27,6 +27,7 @@
 
 .menu-link__link {
   display: flex;
+  justify-content: space-between;
   height: 100%;
   align-items: center;
   text-decoration: none;
@@ -37,6 +38,10 @@
 }
 .menu-link__link:hover {
   color: #fff;
+}
+
+.menu-link__link p {
+  color: red;
 }
 
 li {
