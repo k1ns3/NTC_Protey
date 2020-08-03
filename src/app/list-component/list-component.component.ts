@@ -48,4 +48,9 @@ export class ListComponentComponent implements OnInit {
     this.objects.push(object);
     console.log('Объект добавлен', this.objects);
   }
+
+  removeItem(obj: Item): Item[] {
+    const result = this.objects.filter((item) => item.id !== obj.id);
+    return (this.objects = result);
+  }
 }
