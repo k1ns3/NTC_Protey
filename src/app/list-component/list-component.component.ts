@@ -21,8 +21,8 @@ export class ListComponentComponent implements OnInit {
     this.objects = [];
     this.form = new FormGroup({
       title: new FormControl('', [Validators.required]),
-      latitude: new FormControl('59.936', [Validators.required]),
-      longitude: new FormControl('30.312', [Validators.required]),
+      latitude: new FormControl('59.93', [Validators.required]),
+      longitude: new FormControl('30.31', [Validators.required]),
     });
   }
 
@@ -38,12 +38,14 @@ export class ListComponentComponent implements OnInit {
 
   onSubmit(): void {
     const { latitude, longitude, title } = this.form.value;
-    const object = {
+    const object: Item = {
+      id: this.objects.length + 1,
       title,
       latitude,
       longitude,
     };
     this.mapService.addObject(object);
-    console.log(object);
+    this.objects.push(object);
+    console.log(this.objects);
   }
 }
