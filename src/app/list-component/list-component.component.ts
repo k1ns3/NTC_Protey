@@ -46,11 +46,11 @@ export class ListComponentComponent implements OnInit {
     };
     this.mapService.addObject(object);
     this.objects.push(object);
-    console.log('Объект добавлен', this.objects);
   }
 
   removeItem(obj: Item): Item[] {
     const result = this.objects.filter((item) => item.id !== obj.id);
+    this.mapService.removeMarkerFromMap(obj);
     return (this.objects = result);
   }
 }

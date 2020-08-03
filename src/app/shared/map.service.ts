@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { greenIcon, redIcon } from '../../constants/points';
 import { BehaviorSubject } from 'rxjs';
+import { Item } from '../models/items';
 
 @Injectable({
   providedIn: 'root',
@@ -66,5 +67,12 @@ export class MapService {
       this.newMarkerId.marker.setIcon(greenIcon);
     }
     return (this.selectedItem = id);
+  }
+
+  public removeMarkerFromMap(obj: Item): void {
+    const result = this.markers.find(
+      (item) => item.marker.options.id === obj.id
+    );
+    this.map.removeLayer(result.marker);
   }
 }
