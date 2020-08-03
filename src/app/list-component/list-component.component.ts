@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ItemsService } from '../shared/items.service';
 import { Item } from '../models/items';
 import { MapService } from '../shared/map.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-list-component',
@@ -11,12 +12,18 @@ import { MapService } from '../shared/map.service';
 export class ListComponentComponent implements OnInit {
   objects: Item[];
   array: any;
+  form: FormGroup;
 
   constructor(
     public itemsService: ItemsService,
     public mapService: MapService
   ) {
     this.objects = [];
+    this.form = new FormGroup({
+      title: new FormControl('', [Validators.required]),
+      latitude: new FormControl('59.936', [Validators.required]),
+      longitude: new FormControl('30.312', [Validators.required]),
+    });
   }
 
   ngOnInit(): void {
@@ -27,5 +34,16 @@ export class ListComponentComponent implements OnInit {
     this.itemsService.getJSON().subscribe((data) => {
       this.objects = data.items;
     });
+  }
+
+  onSubmit(): void {
+    const { latitude, longitude, title } = this.form.value;
+    const object = {
+      title,
+      latitude,
+      longitude,
+    };
+    this.mapService.addObject(object);
+    console.log(object);
   }
 }

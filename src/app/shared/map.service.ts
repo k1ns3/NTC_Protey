@@ -34,15 +34,17 @@ export class MapService {
     this.getTaskId(this.markerId);
   }
 
-  public addObject(): void {
+  public addObject(obj: any): void {
     this.markers.push({
-      marker: L.marker([59.868909, 30.16526], {
+      marker: L.marker([obj.latitude, obj.longitude], {
         icon: greenIcon,
         id: this.markers.length + 1,
       })
         .addTo(this.map)
         .bindPopup(
-          `<h3 style="color: #264c7c">Мой дом - ${this.markers.length + 1}</h3>`
+          `<h3 style="color: #264c7c">${obj.title} - ${
+            this.markers.length + 1
+          }</h3>`
         )
         .on('click', (event) => this.onClickMarker(event)),
     });

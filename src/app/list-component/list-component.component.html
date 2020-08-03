@@ -1,7 +1,6 @@
 <div class="menu__list">
-  <h1>Список объектов:</h1>
+  <h1>Список объектов</h1>
   <h2>Выбранный объект: {{ mapService.selectedItem | number }}</h2>
-  <button (click)="mapService.addObject()" class="button-add">Добавить</button>
   <div class="sidebar__menu">
     <ul class="menu__list">
       <li *ngFor="let obj of objects">
@@ -16,4 +15,22 @@
       </li>
     </ul>
   </div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <h3>Введите координаты:</h3>
+    <input
+      formControlName="title"
+      type="text"
+      placeholder="Название объекта"
+      maxlength="20"
+    />
+    <label
+      >Долгота: <input formControlName="latitude" type="number" step="0.005"
+    /></label>
+    <label
+      >Широта: <input formControlName="longitude" type="number" step="0.005"
+    /></label>
+    <button [disabled]="form.invalid" type="submit" class="submit">
+      Добавить
+    </button>
+  </form>
 </div>
