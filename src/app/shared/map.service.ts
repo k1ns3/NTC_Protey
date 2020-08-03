@@ -49,7 +49,6 @@ export class MapService {
         )
         .on('click', (event) => this.onClickMarker(event)),
     });
-    console.log('Маркеры обновлены: ', this.markers);
   }
 
   public getTaskId(id: BehaviorSubject<number>): BehaviorSubject<number> {
