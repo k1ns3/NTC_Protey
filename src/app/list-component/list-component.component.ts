@@ -11,7 +11,7 @@ export class ListComponentComponent implements OnInit {
   objects: Item[];
   array: any;
 
-  constructor(private itemsService: ItemsService) {
+  constructor(public itemsService: ItemsService) {
     this.objects = [];
   }
 

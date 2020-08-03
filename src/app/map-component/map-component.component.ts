@@ -12,7 +12,7 @@ import { MainLayer } from '../models/mainLayer';
 export class MapComponentComponent implements AfterViewInit {
   map: L.Map;
   zoomLevel: number;
-  markerId: number;
+  markerId: any;
   oldMarkerId: L.marker;
   markers: L.marker[];
 
@@ -61,7 +61,9 @@ export class MapComponentComponent implements AfterViewInit {
             id: point.id,
           })
             .addTo(this.map)
-            .bindPopup(`<h3 style="color: #264c7c">${point.title}</h3>`)
+            .bindPopup(
+              `<h3 style="color: #264c7c">${point.title} - ${point.id}</h3>`
+            )
             .on('click', (event) => this.onClickMarker(event)),
         });
       });
@@ -80,9 +82,10 @@ export class MapComponentComponent implements AfterViewInit {
     this.oldMarkerId = this.markers.find(
       (item) => item.marker.options.id === this.markerId
     );
-    if (this.oldMarkerId !== undefined) {
+    if (this.oldMarkerId) {
       this.oldMarkerId.marker.setIcon(greenIcon);
     }
     this.markerId = layer.options.id;
+    this.itemsService.getTaskId(this.markerId);
   }
 }

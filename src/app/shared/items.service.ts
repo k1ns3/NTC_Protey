@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ItemsService {
-  selectedItem: number;
+  public selectedItem: BehaviorSubject<number>;
 
   constructor(private http: HttpClient) {}
 
@@ -14,7 +14,8 @@ export class ItemsService {
     return this.http.get('./assets/data/data.json');
   }
 
-  public getTaskId(id: number): number {
+  public getTaskId(id: BehaviorSubject<number>): BehaviorSubject<number> {
+    console.log(id);
     return (this.selectedItem = id);
   }
 }

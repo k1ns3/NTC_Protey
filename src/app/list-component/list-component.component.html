@@ -1,11 +1,15 @@
 <div class="menu__list">
   <h1>Список объектов:</h1>
+  <h2>Выбранный объект: {{ itemsService.selectedItem | number }}</h2>
   <div class="sidebar__menu">
     <ul class="menu__list">
       <li *ngFor="let obj of objects">
         <div class="menu-link--accent menu-link">
-          <a (click)="itemsService.getTaskId(obj.id)" class="menu-link__link"
-            >{{ obj.id + 1 }}) {{ obj.title }}</a
+          <a
+            (click)="itemsService.getTaskId(obj.id)"
+            [class.menu-link--active]="itemsService.selectedItem === obj.id"
+            class="menu-link__link"
+            >{{ obj.id }}) {{ obj.title }}</a
           >
         </div>
       </li>
