@@ -1,25 +1,23 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
-import { ItemsService } from '../shared/items.service';
 import { greenIcon } from '../../constants/points';
 import { MainLayer } from '../models/mainLayer';
 import { MapService } from '../shared/map.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-map-component',
   templateUrl: './map-component.component.html',
   styleUrls: ['./map-component.component.css'],
 })
-export class MapComponentComponent implements AfterViewInit {
-  map: L.Map;
-  zoomLevel: number;
+export class MapComponentComponent implements AfterViewInit, OnDestroy {
+  private readonly _DESTROY$: Subject<any>;
+  private readonly zoomLevel: number;
   markerId: any;
   oldMarkerId: L.marker;
 
-  constructor(
-    private itemsService: ItemsService,
-    private mapService: MapService
-  ) {
+  constructor(private mapService: MapService) {
     this.zoomLevel = 10;
     this.oldMarkerId = null;
     this.markerId = null;
@@ -28,6 +26,11 @@ export class MapComponentComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.getMapData();
     this.getData();
+  }
+
+  ngOnDestroy(): void {
+    this._DESTROY$.next();
+    this._DESTROY$.complete();
   }
 
   getMapData(): void {
@@ -55,21 +58,23 @@ export class MapComponentComponent implements AfterViewInit {
 
   getData(): void {
     const markers = [];
-    this.itemsService.getJSON().subscribe((data) => {
-      data.items.forEach((point) => {
+    this.mapService.getJSON().subscribe((data) => {
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < data.items.length; i++) {
         markers.push({
-          marker: L.marker([point.latitude, point.longitude], {
+          marker: L.marker([data.items[i].latitude, data.items[i].longitude], {
             icon: greenIcon,
-            id: point.id,
+            id: data.items[i].id,
           })
             .addTo(this.mapService.map)
             .bindPopup(
-              `<h3 style="color: #264c7c">${point.title} - ${point.id}</h3>`
+              `<h3 style="color: #264c7c">${data.items[i].title} - ${data.items[i].id}</h3>`
             )
             .on('click', (event) => this.mapService.onClickMarker(event)),
         });
-      });
+      }
       this.mapService.markers = markers;
-    });
+    }),
+      takeUntil(this._DESTROY$);
   }
 }

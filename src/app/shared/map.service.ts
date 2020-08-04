@@ -1,29 +1,34 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { greenIcon, redIcon } from '../../constants/points';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Item } from '../models/items';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapService {
-  public selectedItem: BehaviorSubject<number>;
-  public markers: L.marker[];
+  selectedItem: BehaviorSubject<number>;
+  markers: L.marker[];
   map: L.Map;
   oldMarkerId: L.marker;
   newMarkerId: L.marker;
   markerId: any;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  public onClickMarker(event): void {
+  getJSON(): Observable<any> {
+    return this.http.get('./assets/data/data.json');
+  }
+
+  onClickMarker(event): void {
     const layer = event.target;
     this.map.panTo(layer.getLatLng());
     this.onChangeItem(event.target);
   }
 
-  public onChangeItem(layer: L.marker): void {
+  onChangeItem(layer: L.marker): void {
     layer.setIcon(redIcon);
     this.oldMarkerId = this.markers.find(
       (item) => item.marker.options.id === this.markerId
@@ -35,7 +40,7 @@ export class MapService {
     this.getTaskId(this.markerId);
   }
 
-  public addObject(obj: any): void {
+  addObject(obj: any): void {
     this.markers.push({
       marker: L.marker([Number(obj.latitude), Number(obj.longitude)], {
         icon: greenIcon,
@@ -51,7 +56,7 @@ export class MapService {
     });
   }
 
-  public getTaskId(id: BehaviorSubject<number>): BehaviorSubject<number> {
+  getTaskId(id: BehaviorSubject<number>): BehaviorSubject<number> {
     this.oldMarkerId = this.markers.find(
       (item) => item.marker.options.id === id
     );
@@ -68,7 +73,7 @@ export class MapService {
     return (this.selectedItem = id);
   }
 
-  public removeMarkerFromMap(obj: Item): void {
+  removeMarkerFromMap(obj: Item): void {
     const result = this.markers.find(
       (item) => item.marker.options.id === obj.id
     );

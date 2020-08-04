@@ -1,23 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ItemsService } from '../shared/items.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Item } from '../models/items';
 import { MapService } from '../shared/map.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-list-component',
   templateUrl: './list-component.component.html',
   styleUrls: ['./list-component.component.css'],
 })
-export class ListComponentComponent implements OnInit {
+export class ListComponentComponent implements OnInit, OnDestroy {
+  private readonly _DESTROY$: Subject<any>;
   objects: Item[];
   array: any;
   form: FormGroup;
 
-  constructor(
-    public itemsService: ItemsService,
-    public mapService: MapService
-  ) {
+  constructor(public mapService: MapService) {
     this.objects = [];
     this.form = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -30,10 +29,16 @@ export class ListComponentComponent implements OnInit {
     this.getData();
   }
 
+  ngOnDestroy(): void {
+    this._DESTROY$.next();
+    this._DESTROY$.complete();
+  }
+
   private getData(): void {
-    this.itemsService.getJSON().subscribe((data) => {
+    this.mapService.getJSON().subscribe((data) => {
       this.objects = data.items;
-    });
+    }),
+      takeUntil(this._DESTROY$);
   }
 
   onSubmit(): void {
